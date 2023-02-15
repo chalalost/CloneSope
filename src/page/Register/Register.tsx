@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form'
 import Input from '../../components/Input'
+import { schema, Schema } from '../../utils/rule'
 
+
+type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
 export default function Register() {
     const {
         register,

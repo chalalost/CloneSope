@@ -2,7 +2,7 @@ import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
 import * as yup from 'yup'
 import { AnyObject } from 'yup/lib/types'
 
-type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
+type Rules = { [key in 'email' | 'password' | 'confirmPassword']?: RegisterOptions }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
@@ -38,7 +38,7 @@ export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
             message: 'Độ dài từ 6 - 160 ký tự'
         }
     },
-    confirm_password: {
+    confirmPassword: {
         required: {
             value: true,
             message: 'Nhập lại password là bắt buộc'
@@ -87,7 +87,7 @@ export const schema = yup.object({
         .required('Password là bắt buộc')
         .min(6, 'Độ dài từ 6 - 160 ký tự')
         .max(160, 'Độ dài từ 6 - 160 ký tự'),
-    confirm_password: handleConfirmPasswordYup('password'),
+    confirmPassword: handleConfirmPasswordYup('password'),
     price_min: yup.string().test({
         name: 'price-not-allowed',
         message: 'Giá không phù hợp',
@@ -109,7 +109,7 @@ export const userSchema = yup.object({
     date_of_birth: yup.date().max(new Date(), 'Hãy chọn một ngày trong quá khứ'),
     password: schema.fields['password'],
     new_password: schema.fields['password'],
-    confirm_password: handleConfirmPasswordYup('new_password')
+    confirmPassword: handleConfirmPasswordYup('new_password')
 })
 
 export type UserSchema = yup.InferType<typeof userSchema>

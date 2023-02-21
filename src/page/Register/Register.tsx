@@ -2,19 +2,32 @@ import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form'
 import Input from '../../components/Input'
 import { schema, Schema } from '../../utils/rule'
+import { getRules } from '../../utils/rule'
 
-
-type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
+// interface Data {
+//     email: string | '',
+//     password: string | '',
+//     confirmPassword: string | ''
+// }
+type FormData = Pick<Schema, 'email' | 'password' | 'confirmPassword'>
 export default function Register() {
     const {
         register,
         handleSubmit,
-        formState: { errors } } = useForm()
+        watch,
+        getValues,
+        formState: { errors } } = useForm<FormData>()
 
-    // const onSubmit = handleSubmit(data => {
-    //     console.log(data)
-    // })
-    const onSubmit = (data: any) => console.log(data);
+    const rules = getRules(getValues)
+    const onSubmit = handleSubmit(
+        (data) => {
+            console.log(data)
+        },
+        (data) => {
+            const password = getValues('password')
+            console.log(password);
+        }
+    )
     return (
         <div className='bg-orange'>
             {/* <Helmet>
@@ -24,35 +37,52 @@ export default function Register() {
             <div className='container'>
                 <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
                     <div className='lg:col-span-2 lg:col-start-4'>
-                        <form className='rounded bg-white p-10 shadow-sm' onSubmit={handleSubmit(onSubmit)}>
+                        {/* noValidate để disabled validate */}
+                        {/* trong này đang validate mỗi khi ấn submit */}
+                        <form className='rounded bg-white p-10 shadow-sm' onSubmit={(onSubmit)} noValidate >
                             <div className='text-2xl'>Đăng ký</div>
                             <Input
                                 name='email'
                                 register={register}
-                                type='email'
+                                type='text'
                                 className='mt-8'
-                                //errorMessage={errors.email?.message}
+                                errorMessage={errors.email?.message}
                                 placeholder='Email'
+                                rules={rules.email}
+                            // {...register("email", {
+                            //     required: {
+                            //         value: true,
+                            //         message: 'bat buoc'
+                            //     },
+                            //     pattern: {
+                            //         value: /^\S+@\S+\.\S+$/,
+                            //         message: 'ko dung dinh dang'
+                            //     },
+                            // })}
                             />
+                            {/* dung input thong thuong se co them 1 div hien thi loi */}
+                            {/* <div className='mt-1 text-red-600 min-h-[1rem] text-sm'>{errors.email?.message}</div> */}
                             <Input
                                 name='password'
                                 register={register}
                                 type='password'
                                 className='mt-2'
                                 classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
-                                //errorMessage={errors.password?.message}
+                                errorMessage={errors.password?.message}
                                 placeholder='Password'
+                                rules={rules.password}
                                 autoComplete='on'
                             />
 
                             <Input
-                                name='confirm_password'
+                                name='confirmPassword'
                                 register={register}
                                 type='password'
                                 className='mt-2'
                                 classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
-                                //errorMessage={errors.confirm_password?.message}
+                                errorMessage={errors.confirmPassword?.message}
                                 placeholder='Confirm Password'
+                                rules={rules.confirmPassword}
                                 autoComplete='on'
                             />
                             <div className="mt-3">

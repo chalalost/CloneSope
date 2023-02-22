@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form'
 import Input from '../../components/Input'
-import { schema, Schema } from '../../utils/rule'
-import { getRules } from '../../utils/rule'
+import { getRules, schema, Schema } from '../../utils/rule'
 
 // interface Data {
 //     email: string | '',

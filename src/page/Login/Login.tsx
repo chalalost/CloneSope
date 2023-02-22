@@ -4,15 +4,28 @@ import { Helmet } from 'react-helmet-async'
 import Button from '../../components/Button'
 import { useForm } from 'react-hook-form'
 import Input from '../../components/Input'
+import { getRules, schema, Schema } from '../../utils/rule'
+
+type FormData = Pick<Schema, 'email' | 'password'>
 
 export default function Login() {
     const {
         register,
         handleSubmit,
-        formState: { errors } } = useForm()
-    const onSubmit = handleSubmit(data => {
-        console.log(data)
-    })
+        watch,
+        getValues,
+        formState: { errors } } = useForm<FormData>()
+
+    const rules = getRules(getValues)
+    const onSubmit = handleSubmit(
+        (data) => {
+            console.log(data)
+        },
+        (data) => {
+            const password = getValues('password')
+            console.log(password);
+        }
+    )
     return (
         <div className='bg-orange'>
             {/* <Helmet>
@@ -30,10 +43,11 @@ export default function Login() {
                             <Input
                                 name='email'
                                 register={register}
-                                type='email'
+                                type='text'
                                 className='mt-8'
-                                //errorMessage={errors.email?.message}
+                                errorMessage={errors.email?.message}
                                 placeholder='Email'
+                                rules={rules.email}
                             />
                             <Input
                                 name='password'
@@ -41,8 +55,9 @@ export default function Login() {
                                 type='password'
                                 className='mt-2'
                                 classNameEye='absolute right-[5px] h-5 w-5 cursor-pointer top-[12px]'
-                                //errorMessage={errors.password?.message}
+                                errorMessage={errors.password?.message}
                                 placeholder='Password'
+                                rules={rules.password}
                                 autoComplete='on'
                             />
 
